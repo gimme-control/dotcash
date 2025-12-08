@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.20)
-project(jetspace_kernel CXX)
+project(jetspace_kernel CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -flto -fPIC")
 
-add_subdirectory(third_party/blake3/c)
+find_library(BLAKE3_LIB blake3 HINTS ${CMAKE_SOURCE_DIR}/libs)
+if(NOT BLAKE3_LIB)
+    message(FATAL_ERROR "libblake3.a not found in libs/")
+endif()
 
 find_library(DILITHIUM_LIB dilithium HINTS ${CMAKE_SOURCE_DIR}/libs)
 if(NOT DILITHIUM_LIB)
@@ -45,7 +48,7 @@ target_compile_definitions(zk_kernel PRIVATE DILITHIUM_MODE=3)
 
 target_link_libraries(zk_kernel
     PRIVATE
-    blake3
+    ${BLAKE3_LIB}
     ${DILITHIUM_LIB}
     pthread
     dl
