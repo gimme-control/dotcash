@@ -1,9 +1,0 @@
-[submodule "jetspace-kernel/third_party/blake3"]
-	path = jetspace-kernel/third_party/blake3
-	url = https://github.com/BLAKE3-team/BLAKE3
-[submodule "jetspace-kernel/third_party/dilithium"]
-	path = jetspace-kernel/third_party/dilithium
-	url = https://github.com/pq-crystals/dilithium
-[submodule "jetspace-kernel/third_party/stone-prover"]
-	path = jetspace-kernel/third_party/stone-prover
-	url = https://github.com/starkware-libs/stone-prover
