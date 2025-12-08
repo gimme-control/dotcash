@@ -1,0 +1,69 @@
+# Ignore all markdown files except README.md
+*.md
+!README.md
+
+# Build artifacts
+build/
+cmake-build-*/
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+*.out
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!cmake/FindStone.cmake
+
+# Static libraries (built from third_party)
+libs/
+*.a
+
+# Compiled binaries
+cpu_air_prover
+cpu_air_verifier
+zk_kernel
+zk-pq-kernel
+
+# Cairo compilation outputs
+*.json
+!package.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python (for Cairo tooling)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+*.cover
+.hypothesis/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
