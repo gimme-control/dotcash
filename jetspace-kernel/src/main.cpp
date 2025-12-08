@@ -7,6 +7,7 @@
 #include <vector>
 #include <chrono>
 #include <cstring>
+#include <cstdio>
 
 std::array<uint8_t, 32> compute_state_root(const std::vector<std::array<uint8_t, 32>>& commitments) {
     return blake3_hash_tree(commitments);

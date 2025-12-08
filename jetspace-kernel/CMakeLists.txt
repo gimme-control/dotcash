@@ -23,15 +23,20 @@ include_directories(third_party/blake3/c)
 include_directories(third_party/dilithium/ref)
 include_directories(third_party/stone-prover/src)
 
-add_custom_command(
-    OUTPUT ${CMAKE_BINARY_DIR}/transfer.json
-    COMMAND cairo-compile ${CMAKE_SOURCE_DIR}/circuits/transfer.cairo
-            --output ${CMAKE_BINARY_DIR}/transfer.json
-    DEPENDS ${CMAKE_SOURCE_DIR}/circuits/transfer.cairo
-    COMMENT "Compiling Cairo circuit"
-)
-
-add_custom_target(compile_circuits DEPENDS ${CMAKE_BINARY_DIR}/transfer.json)
+find_program(CAIRO_COMPILE cairo-compile)
+if(CAIRO_COMPILE)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/transfer.json
+        COMMAND ${CAIRO_COMPILE} ${CMAKE_SOURCE_DIR}/circuits/transfer.cairo
+                --output ${CMAKE_BINARY_DIR}/transfer.json
+        DEPENDS ${CMAKE_SOURCE_DIR}/circuits/transfer.cairo
+        COMMENT "Compiling Cairo circuit"
+    )
+    add_custom_target(compile_circuits DEPENDS ${CMAKE_BINARY_DIR}/transfer.json)
+else()
+    message(WARNING "cairo-compile not found - Cairo circuit compilation skipped")
+    add_custom_target(compile_circuits)
+endif()
 
 add_executable(zk_kernel
     src/main.cpp
