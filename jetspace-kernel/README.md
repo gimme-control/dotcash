@@ -42,11 +42,11 @@ Run performance benchmarks:
 
 ### Performance Metrics
 
-**BLAKE3 Hashing**: 2.28 µs/hash, 448.7 MB/s throughput
-**Block Hash**: 0.60 µs/hash
-**Dilithium-3 Sign**: 1,808 µs/sign
-**Dilithium-3 Verify**: 500 µs/verify
-**End-to-End**: 100 blocks generated (10 transactions per block, proof verification fails due to missing Stone Prover)
+- **BLAKE3 Hashing**: 2.28 µs/hash, 448.7 MB/s throughput
+- **Block Hash**: 0.60 µs/hash
+- **Dilithium-3 Sign**: 1,808 µs/sign
+- **Dilithium-3 Verify**: 500 µs/verify
+- **End-to-End**: 100 blocks generated (10 transactions per block, proof verification fails due to missing Stone Prover)
 
 ### What This Demonstrates
 
