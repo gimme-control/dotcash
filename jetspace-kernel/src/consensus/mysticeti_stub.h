@@ -6,6 +6,7 @@
 
 struct ConsensusNode {
     DilithiumPk public_key;
+    DilithiumSk secret_key;
 };
 
 std::vector<ConsensusNode> initialize_consensus_nodes(size_t num_nodes = 7);

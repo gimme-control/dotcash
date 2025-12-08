@@ -8,7 +8,7 @@ std::vector<ConsensusNode> initialize_consensus_nodes(size_t num_nodes) {
     
     for (size_t i = 0; i < num_nodes; ++i) {
         auto [pk, sk] = dilithium_keygen();
-        nodes.push_back({pk});
+        nodes.push_back({pk, sk});
     }
     
     return nodes;
@@ -22,8 +22,7 @@ std::vector<std::vector<uint8_t>> simulate_mysticeti_consensus(
     size_t quorum = (nodes.size() * 5 + 6) / 7;
     
     for (size_t i = 0; i < quorum && i < nodes.size(); ++i) {
-        DilithiumSk dummy_sk;
-        auto sig = dilithium_sign(dummy_sk, header_hash);
+        auto sig = dilithium_sign(nodes[i].secret_key, header_hash);
         signatures.push_back(sig);
     }
     
