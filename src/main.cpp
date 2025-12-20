@@ -1,8 +1,7 @@
 #include <iostream>
 #include <openssl/sha.h>
 
-using namespace std;
 int main() {
-    cout << "hi" << endl;
+    std::cout << "hi" << std::endl;
     return 0;
 }
