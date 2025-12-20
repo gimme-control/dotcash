@@ -4,81 +4,70 @@
 #include <vector>
 #include <openssl/sha.h>
 #include <iomanip>
-
-std::string sha256(const std::string str) {    
-    unsigned char hash[SHA256_DIGEST_LENGTH];    
-    SHA256_CTX sha256;    
-
-    SHA256_Init(&sha256);    
-    SHA256_Update(&sha256, str.c_str(), str.length());    
-    SHA256_Final(hash, &sha256);    
-
-    std::stringstream ss;    
-
-    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++) {        
-        ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];    
-    }    
-
-    return ss.str();
-}
+#include "hashing.h"
+#include "transaction.h"
 
 class Block 
 {
-    public: 
-        int index; 
-        std::string timestamp;
-        std::vector<Transaction> transactions; 
-        std::string previousHash; 
+    private: 
+        int index; // index 
+        std::string timestamp; // curr timeestamp of block 
+        std::vector<Transaction> transactions; // merkle root of prev transactiosn? 
+        std::string previousHash; // hash of the prev block
         std::string hash; 
 
-        int nonce; 
+        int nonce; // you update this until you hit the hash we want? 
 
-    Block(int id, std::string time, std::vector<Transaction> txs, std::string prevHash)
-    {
-        index = id; 
-        timestamp = time; 
-        transactions = txs; 
-        previousHash = prevHash; 
-        nonce = 0; 
-        hash = calculateHash(); 
-    }
-
-    std::string calculateHash() 
-    {
-        std::stringstream ss; 
-        ss << index << timestamp << previousHash << nonce; 
-        // Add transactions 
-        return sha256(ss.str());  
-    }
-
-
-    void mineBlock(int difficulty) 
-    {
-        std::string target(difficulty, '0');  
-        while(hash.substr(0, difficulty) != target)
+    public: 
+        Block(int id, std::string time, std::vector<Transaction> txs, std::string prevHash)
         {
-            nonce++; 
+            index = id; 
+            timestamp = time; 
+            transactions = txs; 
+            previousHash = prevHash; 
+            nonce = 0; 
             hash = calculateHash(); 
         }
-    }
 
-    void proofOfWork(int difficulty)
-    {
-        std::string target(difficulty, '0'); 
-        do {
-            proof++;  
-        } while (hash.substr(0, difficulty) != target);
-    }
+        std::string calculateHash() 
+        {
+            std::stringstream ss; 
+            ss << index << timestamp << previousHash << nonce; 
 
+            // adding transactions to the hash
+            for(Transaction t : transactions)
+                ss << t.transactionToString(); 
+
+            return sha256(ss.str());  
+        }
+
+
+        // what is this function
+        int mineBlock(int difficulty) // who sets this difficulty
+        {
+            std::string target(difficulty, '0'); 
+            while(hash.substr(0, difficulty) != target)
+            {
+                nonce++; 
+                hash = calculateHash(); 
+            }
+            return nonce; 
+        }
+
+        const std::string getHash() const 
+        {
+            return hash; 
+        }
 }; 
 
 
 class BlockChain 
 {
-    public:
+    private:
         std::vector<Block> chain; 
         int difficulty;
         
+    public: 
         BlockChain(int diff)
         {
             difficulty = diff; 
@@ -87,7 +76,9 @@ class BlockChain
 
         Block createGenesisBlock()
         {
-            return Block(0, "10/31/2025", "Genesis Block", "0");
+            std::vector<Transaction> transaction{};
+            return Block(0, "date today", transaction, "Genesis Block");
+            // how can we add transactions now? 
         }
 
         Block getLatestBlock()
@@ -95,19 +86,19 @@ class BlockChain
             return chain.back();  
         }
 
-        bool isValidProof(const Block& block) const 
+        bool isValidProof(const Block& block) 
         {
-            return block.hash.substr(0, difficulty) == std::string(difficulty, '0'); 
+
+            return block.getHash().substr(0, difficulty) == std::string(difficulty, '0'); 
         }
 
-        void addBlock(std::string data)
+        void addBlock(std::string data, std::vector<Transaction> transactions)
         {
-            Block newBlock(chain.size(), data, chain.back().hash); 
-            newBlock.proofOfWork(difficulty)
+            Block newBlock(chain.size(), data, transactions, chain.back().getHash()); 
+
             if (isValidProof(newBlock)) 
             {
                 chain.push_back(newBlock); 
             }
         }
-
 }; 
