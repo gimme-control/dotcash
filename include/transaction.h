@@ -19,7 +19,6 @@ class Transaction
             txHash = txID; 
         }
 
-
         ~Transaction();
 
         std::string getTxHash()
@@ -28,6 +27,7 @@ class Transaction
                 
         }
 
+        // debug statement 
         std::string transactionToString()
         {
             return sender + recipient + std::to_string(amount); 
