@@ -2,6 +2,11 @@
 #include "../include/block.h" 
 #include <openssl/sha.h>
 #include <chrono>
+#include <unordered_map>
+#include <map> 
+
+// important note use the uint256 data structure for hashes instead of strings.
+std::map<uint256, Transaction> mem_pool; 
 
 int send_to(std::string receiver_address, std::string sender_address, double amount)
 {
@@ -9,11 +14,13 @@ int send_to(std::string receiver_address, std::string sender_address, double amo
     // check if the inputs and outputs are valid and everything matches. 
     // then add it to your own mem pool and send it to other people. 
 
-    Transaction transaction(sender_address, receiver_address, amount, receiver_address); 
+    uint256 txID; 
+    Transaction transaction(sender_address, receiver_address, amount, txID); 
 
     if(transaction.validateTransaction())
     {
         // add transaction to the mem pool and send to other nodes
+        mem_pool[transaction.getTxHash()] = transaction; 
     }
 
     else 
