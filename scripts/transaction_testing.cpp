@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdint>
+#include "../include/transaction.h" 
 
 // fast modular exponentiation
 uint64_t modexp(uint64_t base, uint64_t exp, uint64_t mod) {
@@ -36,4 +37,13 @@ int main() {
         std::cout << "Signature VALID\n";
     else
         std::cout << "Signature INVALID\n";
+
+    Transaction transaction("send", "receiv", 100, "id"); 
+
+    if(transaction.validateTransaction())
+        std::cout << "validated" << '\n';  
+    else 
+        std::cout << "not validated" << '\n';  
+
+    return 0;
 }

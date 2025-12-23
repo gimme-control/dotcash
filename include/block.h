@@ -68,17 +68,21 @@ class BlockChain
         int difficulty;
         
     public: 
-        BlockChain(int diff)
+        BlockChain(int diff, std::string date)
         {
             difficulty = diff; 
-            chain.emplace_back(createGenesisBlock());
+            chain.emplace_back(createGenesisBlock(date));
         }
 
-        Block createGenesisBlock()
+        Block createGenesisBlock(std::string date)
         {
-            std::vector<Transaction> transaction{};
-            return Block(0, "date today", transaction, "Genesis Block");
+
+            // add some transaction that gives someone some initial money (?)
+            std::vector<Transaction> transaction{};             
+
             // how can we add transactions now? 
+            // maybe the genesis block just gives some coins to me? 
+            return Block(0, date, transaction, "Genesis Block");
         }
 
         Block getLatestBlock()

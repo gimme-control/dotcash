@@ -1,5 +1,6 @@
 #include <string>
 
+// We will be using UTXO system here because we want it to be like real cash:q
 class Transaction
 {
     private: 
@@ -18,6 +19,8 @@ class Transaction
         }
 
 
+        ~Transaction();
+
         std::string transactionToString()
         {
             return sender + recipient + std::to_string(amount) + transactionID; 
@@ -26,7 +29,8 @@ class Transaction
         bool validateTransaction() // learn public private key stuff 
         {
             // implementation 
+            // use public key to validate it ? 
             return true; 
         }
-    
+
 }; 
