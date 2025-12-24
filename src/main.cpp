@@ -1,14 +1,11 @@
 #include <iostream>
+#include "../include/mempool.h" 
 #include "../include/block.h" 
 #include <openssl/sha.h>
 #include <chrono>
 #include <unordered_map>
-#include <map> 
 
-// important note use the uint256 data structure for hashes instead of strings.
-std::map<uint256, Transaction> mem_pool; 
-
-int send_to(std::string receiver_address, std::string sender_address, double amount)
+int send_to(std::string receiver_address, std::string sender_address, double amount, MemPool& mempool)
 {
     // basically use Transaction to create a new transaction. 
     // check if the inputs and outputs are valid and everything matches. 
@@ -20,7 +17,7 @@ int send_to(std::string receiver_address, std::string sender_address, double amo
     if(transaction.validateTransaction())
     {
         // add transaction to the mem pool and send to other nodes
-        mem_pool[transaction.getTxHash()] = transaction; 
+        mempool.add_to_mempool(transaction.getTxHash(), transaction); 
     }
 
     else 
@@ -37,6 +34,7 @@ int main()
     // everything for now is oging to ignore networking, all run locally using IPC
     // we create our blockchain
     BlockChain test_net(1, "12/22/2025"); // change this to date rn
+    MemPool mem_pool;  
 
     // cli so we can test adding blocks and the functionality locally
     while(true)
@@ -54,6 +52,8 @@ int main()
             // then add them to the block until the block is full 
             // start mining that block and find the hash for it 
             // then broadcast this block to every node in the network
+
+            mem_pool.get_value_transaction(); 
         }
 
         else if(userIn == "transaction") // want to make a transaction
@@ -63,7 +63,7 @@ int main()
 
             std::cin >> sender_address >> receiver_address; 
 
-            send_to(receiver_address, sender_address, 10); 
+            send_to(receiver_address, sender_address, 10, mem_pool); 
         }
 
 
