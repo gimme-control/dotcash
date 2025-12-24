@@ -1,9 +1,13 @@
+#pragma once
 #include <array>
 #include <string> 
 #include <compare> 
 
 class uint256
 {
+    // potentially need to provide some hashing function so I can use it in other
+    // datastructures
+
     private:    
         std::array<unsigned long long, 4> data; 
     public: 
