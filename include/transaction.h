@@ -1,3 +1,4 @@
+#pragma once 
 #include <string>
 #include "uint256.h" 
 
@@ -21,9 +22,9 @@ class Transaction
 
         ~Transaction();
 
-        std::string getTxHash()
+        uint256 getTxHash()
         {
-            return txHash.to_string(); 
+            return txHash; 
                 
         }
 
