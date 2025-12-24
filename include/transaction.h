@@ -28,6 +28,13 @@ class Transaction
                 
         }
 
+        double getAmount()
+        {
+            return amount; 
+                
+        }
+
+
         // debug statement 
         std::string transactionToString()
         {
