@@ -5,7 +5,8 @@
 #include <chrono>
 #include <unordered_map>
 
-int send_to(std::string receiver_address, std::string sender_address, double amount, MemPool& mempool)
+int send_to(std::string receiver_address, std::string sender_address, double amount, 
+            MemPool& mempool)
 {
     // basically use Transaction to create a new transaction. 
     // check if the inputs and outputs are valid and everything matches. 
@@ -17,7 +18,6 @@ int send_to(std::string receiver_address, std::string sender_address, double amo
     if(transaction.validateTransaction())
     {
         // add transaction to the mem pool and send to other nodes
-        mempool.add_to_mempool(transaction.getTxHash(), transaction); 
     }
 
     else 
@@ -35,7 +35,7 @@ int main()
     // we create our blockchain
     BlockChain test_net(1, "12/22/2025"); // change this to date rn
     MemPool mem_pool;  
-
+ 
     // cli so we can test adding blocks and the functionality locally
     while(true)
     {
@@ -53,7 +53,10 @@ int main()
             // start mining that block and find the hash for it 
             // then broadcast this block to every node in the network
 
-            mem_pool.get_value_transaction(); 
+            std::vector<Transaction> transactions;  
+            transactions.push_back(mem_pool.get_value_transaction()); 
+            
+            test_net.addBlock("date today", transactions); 
         }
 
         else if(userIn == "transaction") // want to make a transaction

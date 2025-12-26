@@ -12,6 +12,15 @@ class Transaction
         uint256 txHash; 
 
     public: 
+
+        Transaction()
+        {
+            sender = "";
+            recipient = ""; 
+            amount = 0; 
+            txHash = uint256(); 
+        }
+
         Transaction(std::string snd, std::string rcp, double amt, uint256 txID)
         {
             sender = snd; 
@@ -20,7 +29,7 @@ class Transaction
             txHash = txID; 
         }
 
-        ~Transaction();
+        auto operator<=>(const Transaction&) const = default; 
 
         uint256 getTxHash()
         {
