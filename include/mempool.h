@@ -3,17 +3,15 @@
 #include <map> 
 #include <set> 
 #include <transaction.h>
-#include <functional>
+#include <iostream>
 
 class MemPool
 {
     private:
         std::map<uint256, Transaction> mem_pool; 
 
-
         // we need another data structure to hold transactions sorted by amount 
-        std::multiset<std::pair<double, Transaction>, 
-    std::greater<std::pair<double, Transaction>>> ordered_pool; 
+        std::multiset<std::pair<double, Transaction>> ordered_pool; 
         
     public: 
         MemPool()
@@ -31,9 +29,13 @@ class MemPool
 
         Transaction get_value_transaction()
         {
-            auto it = ordered_pool.begin();
+            if(ordered_pool.empty())
+            {
+                std::cerr << "Pool is empty" << '\n';  
+                return Transaction(); 
+            }
+
+            auto it = ordered_pool.rbegin();
             return it->second; 
         }
-        
-        ~MemPool(); 
 }; 
