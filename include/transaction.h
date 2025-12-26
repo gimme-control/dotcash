@@ -10,6 +10,7 @@ class Transaction
         std::string recipient; 
         double amount; 
         uint256 txHash; 
+        bool coinbaseTransaction; 
 
     public: 
 
@@ -21,12 +22,14 @@ class Transaction
             txHash = uint256(); 
         }
 
-        Transaction(std::string snd, std::string rcp, double amt, uint256 txID)
+        Transaction(std::string snd, std::string rcp, double amt, uint256 txID,
+                    bool coinbase)
         {
             sender = snd; 
             recipient = rcp; 
             amount = amt; 
             txHash = txID; 
+            coinbaseTransaction = coinbase; 
         }
 
         auto operator<=>(const Transaction&) const = default; 
@@ -43,6 +46,10 @@ class Transaction
                 
         }
 
+        bool isCoinbaseTransaction()
+        {
+            return coinbaseTransaction; 
+        }
 
         // debug statement 
         std::string transactionToString()

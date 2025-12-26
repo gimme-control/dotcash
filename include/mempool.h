@@ -29,11 +29,13 @@ class MemPool
 
         Transaction get_value_transaction()
         {
-            // if(ordered_pool.empty())
-            //     std::cerr << "Pool is empty" << '\n';  
+            if(ordered_pool.empty())
+            {
+                std::cerr << "Pool is empty" << '\n';  
+                return Transaction(); 
+            }
 
-            // auto it = ordered_pool.rbegin();
-            // return it->second; 
-            return Transaction(); 
+            auto it = ordered_pool.rbegin();
+            return it->second; 
         }
 }; 

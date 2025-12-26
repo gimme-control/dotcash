@@ -80,7 +80,11 @@ class BlockChain
         {
 
             // add some transaction that gives someone some initial money (?)
-            std::vector<Transaction> transaction{};             
+            // replace this with my own hash? 
+            Transaction genesisTransact("0", "0101", 100, uint256(), true); 
+
+            std::vector<Transaction> transaction{};
+            transaction.push_back(genesisTransact);  
 
             // how can we add transactions now? 
             // maybe the genesis block just gives some coins to me? 

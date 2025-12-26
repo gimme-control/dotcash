@@ -38,7 +38,7 @@ int main() {
     else
         std::cout << "Signature INVALID\n";
 
-    Transaction transaction("send", "receiv", 100, "id"); 
+    Transaction transaction("send", "receiv", 100, uint256(), false); 
 
     if(transaction.validateTransaction())
         std::cout << "validated" << '\n';  
